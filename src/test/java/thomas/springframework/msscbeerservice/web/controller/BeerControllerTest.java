@@ -1,6 +1,5 @@
 package thomas.springframework.msscbeerservice.web.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +10,7 @@ import thomas.springframework.msscbeerservice.web.model.BeerDto;
 
 import java.util.UUID;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -46,6 +44,14 @@ class BeerControllerTest {
     }
 
     @Test
-    void updateBeerById() {
+    void updateBeerById() throws Exception {
+        BeerDto beerDto = BeerDto.builder().build();
+        String beerDtoJson = objectMapper.writeValueAsString(beerDto);
+
+        mockMvc.perform(put("/api/v1/beer/" + UUID.randomUUID().toString())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(beerDtoJson))
+                .andExpect(status().isNoContent());
+
     }
 }
